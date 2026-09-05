@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Edit customer · Stockroom{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Edit customer</h1>
+    <div class="sub">#{{ customer.customer_id }}</div>
+  </div>
+</div>
+
+<form method="post" class="card">
+  <div class="field">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" value="{{ customer.name }}" required>
+  </div>
+  <div class="field">
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" value="{{ customer.email }}" required>
+  </div>
+  <div class="btn-row">
+    <button type="submit" class="btn btn-accent">Save changes</button>
+    <a href="{{ url_for('customers_list') }}" class="btn btn-ghost">Cancel</a>
+  </div>
+</form>
+{% endblock %}

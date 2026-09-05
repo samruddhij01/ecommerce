@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Customers · Stockroom{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Customers</h1>
+    <div class="sub">{{ customers|length }} on file</div>
+  </div>
+  <a href="{{ url_for('customer_new') }}" class="btn btn-accent">+ New customer</a>
+</div>
+
+{% if customers %}
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in customers %}
+    <tr>
+      <td class="id-tag">#{{ c.customer_id }}</td>
+      <td>{{ c.name }}</td>
+      <td class="mono">{{ c.email }}</td>
+      <td>
+        <div class="btn-row">
+          <a href="{{ url_for('customer_orders', customer_id=c.customer_id) }}" class="btn btn-ghost btn-small">Orders</a>
+          <a href="{{ url_for('customer_edit', customer_id=c.customer_id) }}" class="btn btn-ghost btn-small">Edit</a>
+          <form method="post" action="{{ url_for('customer_delete', customer_id=c.customer_id) }}" onsubmit="return confirm('Delete this customer?');">
+            <button type="submit" class="btn btn-danger btn-small">Delete</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state">No customers yet. Add your first one to get started.</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Stockroom{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="topbar">
+    <a class="wordmark" href="{{ url_for('products_list') }}">Stock<span>room</span></a>
+    <nav>
+      <a href="{{ url_for('products_list') }}" class="{{ 'active' if active == 'products' else '' }}">Products</a>
+      <a href="{{ url_for('customers_list') }}" class="{{ 'active' if active == 'customers' else '' }}">Customers</a>
+      <a href="{{ url_for('orders_new') }}" class="{{ 'active' if active == 'orders' else '' }}">Orders</a>
+      <a href="{{ url_for('analytics_index') }}" class="{{ 'active' if active == 'analytics' else '' }}">Analytics</a>
+    </nav>
+  </div>
+
+  <div class="page">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}New product · Stockroom{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>New product</h1>
+    <div class="sub">Add an item to the catalog</div>
+  </div>
+</div>
+
+<form method="post" class="card">
+  <div class="field">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" required>
+  </div>
+  <div class="field">
+    <label for="price">Price (USD)</label>
+    <input type="number" id="price" name="price" step="0.01" min="0" required>
+  </div>
+  <div class="field">
+    <label for="stock">Starting stock</label>
+    <input type="number" id="stock" name="stock" min="0" required>
+  </div>
+  <div class="field">
+    <label for="category_id">Category ID</label>
+    <input type="number" id="category_id" name="category_id" required>
+    <div class="hint">Numeric ID from your categories table.</div>
+  </div>
+  <div class="btn-row">
+    <button type="submit" class="btn btn-accent">Create product</button>
+    <a href="{{ url_for('products_list') }}" class="btn btn-ghost">Cancel</a>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ customer.name }}'s orders · Stockroom{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>{{ customer.name }}'s orders</h1>
+    <div class="sub">{{ customer.email }}</div>
+  </div>
+  <a href="{{ url_for('orders_new', customer_id=customer.customer_id) }}" class="btn btn-accent">+ New order</a>
+</div>
+
+{% if orders %}
+<table>
+  <thead>
+    <tr>
+      <th>Order</th>
+      <th>Date</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for o in orders %}
+    <tr>
+      <td class="id-tag">#{{ o.order_id }}</td>
+      <td class="mono">{{ o.order_date }}</td>
+      <td class="num">${{ '%.2f'|format(o.total_amount|float) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state">No orders placed yet.</div>
+{% endif %}
+
+<p style="margin-top: 20px;"><a href="{{ url_for('customers_list') }}" class="btn btn-ghost btn-small">&larr; Back to customers</a></p>
+{% endblock %}

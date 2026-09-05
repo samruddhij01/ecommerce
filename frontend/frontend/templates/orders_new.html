@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}New order · Stockroom{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Place an order</h1>
+    <div class="sub">The API only supports creating orders &mdash; there's no route yet to list every order across all customers. To view past orders, open a customer's page.</div>
+  </div>
+</div>
+
+<form method="post" class="card" style="max-width: 560px;">
+  <div class="field">
+    <label for="customer_id">Customer</label>
+    <select id="customer_id" name="customer_id" required>
+      <option value="" disabled {{ 'selected' if not selected_customer_id else '' }}>Select a customer&hellip;</option>
+      {% for c in customers %}
+      <option value="{{ c.customer_id }}" {{ 'selected' if selected_customer_id|string == c.customer_id|string else '' }}>{{ c.name }} ({{ c.email }})</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Items</label>
+    <div id="item-rows">
+      <div class="item-row">
+        <select name="product_id[]" required>
+          <option value="" disabled selected>Product&hellip;</option>
+          {% for p in products %}
+          <option value="{{ p.product_id }}">{{ p.name }} &mdash; ${{ '%.2f'|format(p.price|float) }}</option>
+          {% endfor %}
+        </select>
+        <input type="number" name="quantity[]" min="1" value="1" placeholder="Qty" required>
+        <button type="button" onclick="removeRow(this)">&times;</button>
+      </div>
+    </div>
+    <button type="button" class="add-item-btn" onclick="addRow()">+ Add another item</button>
+  </div>
+
+  <div class="btn-row">
+    <button type="submit" class="btn btn-accent">Place order</button>
+    <a href="{{ url_for('customers_list') }}" class="btn btn-ghost">Cancel</a>
+  </div>
+</form>
+
+<template id="row-template">
+  <div class="item-row">
+    <select name="product_id[]" required>
+      <option value="" disabled selected>Product&hellip;</option>
+      {% for p in products %}
+      <option value="{{ p.product_id }}">{{ p.name }} &mdash; ${{ '%.2f'|format(p.price|float) }}</option>
+      {% endfor %}
+    </select>
+    <input type="number" name="quantity[]" min="1" value="1" placeholder="Qty" required>
+    <button type="button" onclick="removeRow(this)">&times;</button>
+  </div>
+</template>
+
+<script>
+  function addRow() {
+    const tpl = document.getElementById('row-template');
+    const clone = tpl.content.cloneNode(true);
+    document.getElementById('item-rows').appendChild(clone);
+  }
+  function removeRow(btn) {
+    const rows = document.querySelectorAll('.item-row');
+    if (rows.length > 1) {
+      btn.closest('.item-row').remove();
+    }
+  }
+</script>
+{% endblock %}

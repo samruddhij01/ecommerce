@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Analytics · Stockroom{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Analytics</h1>
+    <div class="sub">Sales performance at a glance</div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="panel">
+    <h3>Top products by units sold</h3>
+    {% if top_products %}
+    <table>
+      <tbody>
+        {% for p in top_products %}
+        <tr>
+          <td class="rank" style="width: 30px;">{{ p.sales_rank }}</td>
+          <td>{{ p.name }}</td>
+          <td class="num" style="text-align:right;">{{ p.total_sold }} sold</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">No sales data yet.</div>
+    {% endif %}
+  </div>
+
+  <div class="panel">
+    <h3>Top customers by spend</h3>
+    {% if top_customers %}
+    <table>
+      <tbody>
+        {% for c in top_customers %}
+        <tr>
+          <td class="rank" style="width: 30px;">{{ c.spend_rank }}</td>
+          <td>{{ c.name }}</td>
+          <td class="num" style="text-align:right;">${{ '%.2f'|format(c.total_spent|float) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">No sales data yet.</div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="panel">
+  <h3>Monthly revenue</h3>
+  {% if monthly_revenue %}
+  {% for m in monthly_revenue %}
+  <div class="bar-row">
+    <div class="bar-label">{{ m.month }}</div>
+    <div class="bar-track">
+      <div class="bar-fill" style="width: {{ (m.monthly_total|float / max_monthly * 100)|round(1) }}%;"></div>
+    </div>
+    <div class="bar-value">${{ '%.2f'|format(m.monthly_total|float) }}</div>
+  </div>
+  {% endfor %}
+  {% else %}
+  <div class="empty-state">No revenue data yet.</div>
+  {% endif %}
+</div>
+{% endblock %}
